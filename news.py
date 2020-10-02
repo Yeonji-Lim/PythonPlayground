@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from openpyxl import Workbook
 
 driver = webdriver.Chrome('./chromedriver')
 
@@ -10,6 +11,11 @@ req = driver.page_source
 soup = BeautifulSoup(req, 'html.parser')
 
 #####################
+wb = Workbook()
+ws1 = wb.active
+ws1.title = "articles"
+ws1.append(["제목", "링크", "신문사"])
+
 # print(soup)
 news = soup.select_one('#sp_nws6 > dl > dt > a')
 # print(news.text) # 텍스트만 가져오고 싶은 경우
@@ -35,6 +41,10 @@ for news in all_news:
     company = company.split(' ')[0].replace('언론사', '')
     print(title.text, '|', company)
     # 크롤링은 항상 같은 답이 있는 것은 아니다. 웹사이트 마다 html이 다 다르므로 거기에 맞게 작성해야함
+
+    ws1.append([title.text, url, company])
+
+wb.save(filename='articles.xlsx')
 #####################
 
 driver.quit()
