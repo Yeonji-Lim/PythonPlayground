@@ -3,10 +3,10 @@ with open("kakao.txt", "r", encoding="utf-8") as f:
     lines = f.readlines()
     # 데이터 클렌징
     for line in lines[1:]: # 두번째 라인부터 읽으면 될 듯
-        if 'https://' in line:
+        if 'https://' in line: # 링크 포함 안시킴
             continue
         if '","' in line:
-            text += line.split('","')[1].replace('이모티콘','').replace('ㅋ','').replace('"','').replace('사진\n','')
+            text += line.split('","')[1].replace('이모티콘','').replace('"','').replace('사진','').replace('ㅇ','').replace('ㅋ','')
 
 # print(text)
 
@@ -15,7 +15,7 @@ from wordcloud import WordCloud
 from PIL import Image
 import numpy as np
 
-mask = np.array(Image.open('heart.jpg'))
+mask = np.array(Image.open('cloud.png'))
 wc = WordCloud(font_path='System/Library/Fonts/Supplemental/AppleGothic.ttf', background_color="white", mask=mask)
 wc.generate(text)
 wc.to_file("result_masked.png")
